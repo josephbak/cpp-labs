@@ -119,3 +119,16 @@ compute_dominance_frontiers(const Function& F, const std::vector<int>& idom) {
     }
     return DF;
 }
+
+
+std::vector<std::vector<int>> build_dom_tree_children(const std::vector<int>& idom) {
+    const int n = static_cast<int>(idom.size());
+    std::vector<std::vector<int>> children(n);
+    for (int b = 0; b < n; ++b) {
+        int p = idom[b];
+        if (p < 0) continue;        // skip unreachable
+        if (p == b) continue;       // entry: root has no parent
+        children[p].push_back(b);   // p immediately dominates b
+    }
+    return children;
+}
